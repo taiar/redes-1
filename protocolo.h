@@ -1,5 +1,5 @@
-#ifndef PROTOCOLO
-#define PROTOCOLO PROTOCOLO
+#ifndef __PROTOCOLO_H
+#define __PROTOCOLO_H PROTOCOLO
 
 #include <stdio.h>
 

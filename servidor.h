@@ -1,5 +1,5 @@
-#ifndef SERVIDOR
-#define SERVIDOR SERVIDOR
+#ifndef __SERVIDOR_H
+#define __SERVIDOR_H SERVIDOR
 
   struct sockaddr;
 
