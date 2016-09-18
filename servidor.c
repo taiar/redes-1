@@ -6,32 +6,10 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 
+#include "servidor.h"
+#include "protocolo.h"
+
 #define BUFSZ 1024
-
-void logexit(const char *str) {
-	perror(str);
-	exit(EXIT_FAILURE);
-}
-
-void fill(const struct sockaddr *addr, char *line) {
-	int version;
-	char str[INET6_ADDRSTRLEN];
-	unsigned short port;
-
-	if(addr->sa_family == AF_INET) {
-		version = 4;
-		struct sockaddr_in *addr4 = (struct sockaddr_in *)addr;
-		if(!inet_ntop(addr4->sin_family, &(addr4->sin_addr), str, INET6_ADDRSTRLEN)) logexit("ntop");
-		port = ntohs(addr4->sin_port);
-	} else {
-		version = 6;
-		struct sockaddr_in6 *addr6 = (struct sockaddr_in6 *)addr;
-		if(!inet_ntop(addr6->sin6_family, &(addr6->sin6_addr), str, INET6_ADDRSTRLEN)) logexit("ntop");
-		port = ntohs(addr6->sin6_port);
-	}
-
-	sprintf(line, "IPv%d %s %hu\n", version, str, port);
-}
 
 int main(int argc, char const *argv[]) {
   int porta = atoi(argv[1]);
@@ -70,13 +48,37 @@ int main(int argc, char const *argv[]) {
 		char line2[BUFSZ];
 		while(strcmp(line2, "sair\n") != 0) {
 			if(recv(r, line2, BUFSZ, 0) <= 0) {
-				// Fecha ambas as direções da conexão baseada no socket r
 				close(r);
 			} else {
-				printf("%s\n", line2);
+				parse(line2);
 			}
 		}
   }
 
   exit(EXIT_SUCCESS);
+}
+
+void logexit(const char *str) {
+	perror(str);
+	exit(EXIT_FAILURE);
+}
+
+void fill(const struct sockaddr *addr, char *line) {
+	int version;
+	char str[INET6_ADDRSTRLEN];
+	unsigned short port;
+
+	if(addr->sa_family == AF_INET) {
+		version = 4;
+		struct sockaddr_in *addr4 = (struct sockaddr_in *)addr;
+		if(!inet_ntop(addr4->sin_family, &(addr4->sin_addr), str, INET6_ADDRSTRLEN)) logexit("ntop");
+		port = ntohs(addr4->sin_port);
+	} else {
+		version = 6;
+		struct sockaddr_in6 *addr6 = (struct sockaddr_in6 *)addr;
+		if(!inet_ntop(addr6->sin6_family, &(addr6->sin6_addr), str, INET6_ADDRSTRLEN)) logexit("ntop");
+		port = ntohs(addr6->sin6_port);
+	}
+
+	sprintf(line, "IPv%d %s %hu\n", version, str, port);
 }

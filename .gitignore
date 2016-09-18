@@ -1,2 +1,4 @@
 servidor
 cliente
+*.o
+*.h.gch
