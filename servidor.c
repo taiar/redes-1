@@ -66,6 +66,16 @@ int main(int argc, char const *argv[]) {
 
     fill((struct sockaddr *)raddrptr, line);
     printf("connection from %s", line);
+
+		char line2[BUFSZ];
+		while(strcmp(line2, "sair\n") != 0) {
+			if(recv(r, line2, BUFSZ, 0) <= 0) {
+				// Fecha ambas as direções da conexão baseada no socket r
+				close(r);
+			} else {
+				printf("%s\n", line2);
+			}
+		}
   }
 
   exit(EXIT_SUCCESS);

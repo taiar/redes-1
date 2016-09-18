@@ -34,22 +34,14 @@ int main(int argc, char *argv[]) {
 
 	char line[BUFSZ];
 
-	printf("input> ");
-
-	fgets(line, BUFSZ, stdin);
-	printf("send %s", line);
-	if(send(s, line, strlen(line)+1, 0) <= 0) logexit("send");
-	printf("[waiting response]\n");
-
-	int cnt = 0;
-	while(1) {
-		int r = recv(s, line+cnt, BUFSZ-cnt, 0);
-		if(r == 0) break;
-		if(r < 0) logexit("recv");
-		cnt += r;
+	while(strcmp(line, "sair\n") != 0) {
+		printf("input> ");
+		fgets(line, BUFSZ, stdin);
+		printf("send %s", line);
+		if(send(s, line, strlen(line)+1, 0) <= 0) logexit("send");
 	}
-	printf("recv %s", line);
 
+	printf("oi saindo\n");
 	close(s);
 	exit(EXIT_SUCCESS);
 }
