@@ -1,34 +1,41 @@
 #ifndef __LISTA_H
 #define __LISTA_H
 
+#include <iostream>
+#include <string>
+#include <cstdlib>
+#include <cstring>
+#include <assert.h>
+
+using namespace std;
+
 typedef void (*freeFunction)(void *);
-
-typedef enum { FALSE, TRUE } bool;
-
 typedef bool (*listIterator)(void *);
 
-typedef struct _listNode {
+class ListNode {
+public:
   void *data;
-  struct _listNode *next;
-} listNode;
+  ListNode *next;
+};
 
-typedef struct {
+class List {
+public:
   int logicalLength;
   int elementSize;
-  listNode *head;
-  listNode *tail;
+  ListNode *head;
+  ListNode *tail;
   freeFunction freeFn;
-} list;
 
-void list_new(list *list, int elementSize, freeFunction freeFn);
-void list_destroy(list *list);
+  List(int, freeFunction);
+  void destroy();
 
-void list_prepend(list *list, void *element);
-void list_append(list *list, void *element);
-int list_size(list *list);
+  void prepend(void*);
+  void append(void*);
+  int  size();
 
-void list_for_each(list *list, listIterator iterator);
-void list_head(list *list, void *element, bool removeFromList);
-void list_tail(list *list, void *element);
+  void for_each(listIterator);
+  void h(void*, bool);
+  void t(void*);
+};
 
 #endif
