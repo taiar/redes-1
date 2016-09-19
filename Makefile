@@ -6,8 +6,11 @@ protocolo: protocolo.cpp protocolo.h
 lista: lista.cpp lista.h
 	g++ -c lista.cpp lista.h
 
-servidor: servidor.cpp servidor.h protocolo lista
-	g++ -o servidor servidor.cpp servidor.h protocolo.o lista.o
+tempo: tempo.cpp tempo.h
+	g++ -c tempo.cpp tempo.h
+
+servidor: servidor.cpp servidor.h protocolo lista tempo
+	g++ -o servidor servidor.cpp servidor.h protocolo.o lista.o tempo.o
 
 tserv: servidor
 	./servidor 1234

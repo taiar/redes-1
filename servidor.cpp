@@ -1,11 +1,12 @@
-#include <stdlib>
-#include <stdio>
-#include <string>
-#include <unistd>
+#include <cstdlib>
+#include <cstring>
+#include <unistd.h>
 
-#include <sys/socket>
-#include <arpa/inet>
+#include <sys/socket.h>
+#include <arpa/inet.h>
 
+#include "lista.h"
+#include "tempo.h"
 #include "servidor.h"
 #include "protocolo.h"
 
