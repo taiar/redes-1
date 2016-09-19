@@ -1,4 +1,4 @@
-main: cliente servidor
+main: clean cliente servidor
 
 protocolo: protocolo.cpp protocolo.h
 	g++ -c protocolo.cpp protocolo.h

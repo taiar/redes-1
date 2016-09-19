@@ -3,6 +3,14 @@
 
 #include <stdio.h>
 
-int parse(char[]);
+#include "servidor.h"
+
+class Protocolo {
+public:
+  Servidor *serverInstance;
+
+  Protocolo(Servidor*);
+  int parse(char[]);
+};
 
 #endif

@@ -7,8 +7,9 @@
 
 #include "lista.h"
 #include "tempo.h"
-#include "servidor.h"
 #include "protocolo.h"
+
+#include "servidor.h"
 
 #define BUFSZ 1024
 
@@ -35,6 +36,9 @@ int main(int argc, char const *argv[]) {
   if(listen(s, 0)) logexit("listen");
   printf("Aguardando...\n");
 
+  Servidor *server = new Servidor();
+  Protocolo *protocol = new Protocolo(server);
+
   while (1) {
 		struct sockaddr raddr;
 		socklen_t rlen = sizeof(struct sockaddr);
@@ -51,7 +55,7 @@ int main(int argc, char const *argv[]) {
 			if(recv(r, line2, BUFSZ, 0) <= 0) {
 				close(r);
 			} else {
-				parse(line2);
+				protocol->parse(line2);
 			}
 		}
   }
@@ -82,4 +86,20 @@ void fill(const struct sockaddr *addr, char *line) {
 	}
 
 	sprintf(line, "IPv%d %s %hu\n", version, str, port);
+}
+
+void Servidor::pushTime(char msg[]) {
+  printf("adiciona um tempo ae\n");
+}
+
+void Servidor::getPosition(char msg[]) {
+  printf("pega uma posicao ae\n");
+}
+
+void Servidor::dumpTimes() {
+  printf("mostra todo mundo\n");
+}
+
+void Servidor::shutdown() {
+  printf("fecha a porra toda\n");
 }

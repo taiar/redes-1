@@ -1,18 +1,22 @@
 #include "protocolo.h"
 
-int parse(char msg[]) {
+Protocolo::Protocolo(Servidor *s) {
+  this->serverInstance = s;
+}
+
+int Protocolo::parse(char msg[]) {
   switch (msg[0]) {
     case 'C':
-      printf("CCCCCCCC\n");
+      serverInstance->getPosition(msg);
       break;
     case 'D':
-      printf("DDDDDD\n");
+      serverInstance->pushTime(msg);
       break;
     case 'O':
-      printf("OOOOOOOOOOO\n");
+      serverInstance->dumpTimes();
       break;
     case 'Z':
-      printf("ZZZZZZZZZZZ\n");
+      serverInstance->shutdown();
       break;
   }
 }
