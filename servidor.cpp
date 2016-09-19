@@ -89,7 +89,8 @@ void fill(const struct sockaddr *addr, char *line) {
 }
 
 void Servidor::pushTime(char msg[]) {
-  printf("adiciona um tempo ae\n");
+  Tempo *t = new Tempo();
+  tempos.push_back(t->setFromString(msg));
 }
 
 void Servidor::getPosition(char msg[]) {
@@ -97,7 +98,10 @@ void Servidor::getPosition(char msg[]) {
 }
 
 void Servidor::dumpTimes() {
-  printf("mostra todo mundo\n");
+  for(int i = 0; i < tempos.size(); i += 1) {
+    tempos[i]->print();
+    std::cout << std::endl;
+  }
 }
 
 void Servidor::shutdown() {

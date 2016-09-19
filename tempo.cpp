@@ -16,6 +16,12 @@ Tempo::Tempo(int h, int m, int s, int ms) {
   this->milisseconds = ms;
 }
 
-void Tempo::setFromString(string timeString) {
+Tempo* Tempo::setFromString(char msg[]) {
+  string message(msg);
+  cout << msg << endl;
+  return this;
+}
 
+void Tempo::print() {
+  cout << this->hours << "h " << this->minutes << "m " << this->seconds << "s " << this->milisseconds << "ms ";
 }

@@ -1,6 +1,7 @@
 #ifndef __TEMPO_H
 #define __TEMPO_H TEMPO
 
+#include <iostream>
 #include <vector>
 #include <string>
 
@@ -16,7 +17,8 @@ public:
   Tempo();
   Tempo(int, int, int, int);
   int compare(Tempo);
-  void setFromString(string);
+  Tempo* setFromString(char[]);
+  void print();
 };
 
 #endif
