@@ -3,7 +3,10 @@
 
 #include <iostream>
 #include <vector>
+#include <sstream>
 #include <string>
+
+#include "token.h"
 
 using namespace std;
 
@@ -18,6 +21,7 @@ public:
   Tempo(int, int, int, int);
   int compare(Tempo);
   Tempo* setFromString(char[]);
+  string toString();
   void print();
 };
 

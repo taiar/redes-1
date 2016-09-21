@@ -18,10 +18,21 @@ Tempo::Tempo(int h, int m, int s, int ms) {
 
 Tempo* Tempo::setFromString(char msg[]) {
   string message(msg);
-  cout << msg << endl;
+  Token *t = new Token(message);
+  cout << t->getToken();
+  for(int i = 1; i < t->total(); i += 1) {
+    cout << t->getNextToken();
+  }
+
   return this;
 }
 
+string Tempo::toString() {
+  stringstream s;
+  s << this->hours << "h " << this->minutes << "m " << this->seconds << "s " << this->milisseconds << "ms";
+  s.str();
+}
+
 void Tempo::print() {
-  cout << this->hours << "h " << this->minutes << "m " << this->seconds << "s " << this->milisseconds << "ms ";
+  cout << this->toString();
 }
