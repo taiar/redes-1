@@ -18,7 +18,7 @@ Tempo::Tempo(int h, int m, int s, int ms) {
 
 Tempo* Tempo::setFromString(char msg[]) {
   string message(msg);
-  Token *t = new Token(message);
+  Token *t = new Token(message.substr(0, message.size() - 1));
   for(int i = 1; i < t->total(); i += 1)
     this->parseUnit(t->getNextToken());
   return this;
@@ -58,4 +58,12 @@ void Tempo::setTimeUnit(string number, string timeUnit) {
     this->seconds = intNumber;
   else if(timeUnit == "ms")
     this->milisseconds = intNumber;
+}
+
+bool Tempo::biggerThan(Tempo t) {
+  if(this->hours > t.hours) return true;
+  else if(this->minutes > t.minutes) return true;
+  else if(this->seconds > t.seconds) return true;
+  else if(this->milisseconds > t.milisseconds) return true;
+  return false;
 }

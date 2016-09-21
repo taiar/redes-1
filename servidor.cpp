@@ -91,16 +91,15 @@ void fill(const struct sockaddr *addr, char *line) {
 void Servidor::pushTime(char msg[]) {
   Tempo *t = new Tempo();
   tempos.push_back(t->setFromString(msg));
+  t->print();
 }
 
 void Servidor::getPosition(char msg[]) {
-  printf("pega uma posicao ae\n");
 }
 
 void Servidor::dumpTimes() {
   for(int i = 0; i < tempos.size(); i += 1) {
-    tempos[i]->print();
-    std::cout << std::endl;
+    std::cout << tempos[i]->toString() << std::endl;
   }
 }
 
