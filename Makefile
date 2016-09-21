@@ -18,6 +18,10 @@ servidor: servidor.cpp servidor.h protocolo lista tempo token
 tserv: servidor
 	./servidor 1234
 
+ttempo: clean token tempo
+	g++ -o tst tempotst.c tempo.o token.o
+	./tst
+
 cliente: cliente.cpp
 	g++ -o cliente cliente.cpp
 
@@ -25,4 +29,4 @@ tclient: cliente
 	./cliente 127.0.0.1 1234
 
 clean:
-	rm -rf cliente servidor *.o *.h.gch
+	rm -rf cliente servidor tst *.o *.h.gch
