@@ -6,6 +6,9 @@
 #include <sstream>
 #include <string>
 
+#include <cctype>
+#include <cstdlib>
+
 #include "token.h"
 
 using namespace std;
@@ -26,6 +29,8 @@ public:
 
 private:
   void parseUnit(string);
+  bool isNumber(char);
+  void setTimeUnit(string, string);
 };
 
 #endif

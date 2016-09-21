@@ -34,6 +34,28 @@ void Tempo::print() {
   cout << this->toString();
 }
 
-void Tempo::parseUnit(string) {
-  
+void Tempo::parseUnit(string s) {
+  string number;
+  string timeUnit;
+
+  for(int i = 0; i < s.size(); i += 1)
+    this->isNumber(s[i]) ? number += s[i] : timeUnit += s[i];
+  this->setTimeUnit(number, timeUnit);
+}
+
+bool Tempo::isNumber(char c) {
+  return (isdigit(c) != 0);
+}
+
+void Tempo::setTimeUnit(string number, string timeUnit) {
+  int intNumber = atoi(number.c_str());
+
+  if(timeUnit == "h")
+    this->hours = intNumber;
+  else if(timeUnit == "m")
+    this->minutes = intNumber;
+  else if(timeUnit == "s")
+    this->seconds = intNumber;
+  else if(timeUnit == "ms")
+    this->milisseconds = intNumber;
 }
