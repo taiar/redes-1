@@ -23,6 +23,9 @@ public:
   Tempo* setFromString(char[]);
   string toString();
   void print();
+
+private:
+  void parseUnit(string);
 };
 
 #endif

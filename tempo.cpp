@@ -19,10 +19,8 @@ Tempo::Tempo(int h, int m, int s, int ms) {
 Tempo* Tempo::setFromString(char msg[]) {
   string message(msg);
   Token *t = new Token(message);
-  for(int i = 1; i < (t->total() - 1); i += 1) {
-    cout << t->getNextToken() << endl;
-  }
-
+  for(int i = 1; i < t->total(); i += 1)
+    this->parseUnit(t->getNextToken());
   return this;
 }
 
@@ -34,4 +32,8 @@ string Tempo::toString() {
 
 void Tempo::print() {
   cout << this->toString();
+}
+
+void Tempo::parseUnit(string) {
+  
 }
