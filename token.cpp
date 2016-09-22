@@ -1,7 +1,7 @@
 #include "token.h"
 
 Token::Token(std::string input) {
-  this->input = input;
+  this->input = input.substr(0, input.size() - 1);
   this->tokenize();
 }
 

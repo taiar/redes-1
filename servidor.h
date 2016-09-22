@@ -19,6 +19,7 @@ public:
 
 private:
   std::vector<Tempo*> tempos;
+  Tempo* orderAndReturnThePosition(int);
 };
 
 #endif

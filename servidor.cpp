@@ -95,6 +95,10 @@ void Servidor::pushTime(char msg[]) {
 }
 
 void Servidor::getPosition(char msg[]) {
+  std::string mensagem(msg);
+  Token *t = new Token(mensagem);
+  int position = atoi(t->getNextToken().c_str());
+  std::cout << this->orderAndReturnThePosition(position)->toString() << std::endl;
 }
 
 void Servidor::dumpTimes() {
@@ -105,4 +109,13 @@ void Servidor::dumpTimes() {
 
 void Servidor::shutdown() {
   printf("fecha a porra toda\n");
+}
+
+Tempo* Servidor::orderAndReturnThePosition(int position) {
+  int minIndex = -1;
+  int positions[tempos.size()];
+
+  for (int i = 0; i < tempos.size(); i += 1) {
+
+  }
 }

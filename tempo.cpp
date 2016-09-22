@@ -18,7 +18,7 @@ Tempo::Tempo(int h, int m, int s, int ms) {
 
 Tempo* Tempo::setFromString(char msg[]) {
   string message(msg);
-  Token *t = new Token(message.substr(0, message.size() - 1));
+  Token *t = new Token(message);
   for(int i = 1; i < t->total(); i += 1)
     this->parseUnit(t->getNextToken());
   return this;
