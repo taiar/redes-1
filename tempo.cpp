@@ -60,10 +60,14 @@ void Tempo::setTimeUnit(string number, string timeUnit) {
     this->milisseconds = intNumber;
 }
 
-bool Tempo::biggerThan(Tempo t) {
-  if(this->hours > t.hours) return true;
-  else if(this->minutes > t.minutes) return true;
-  else if(this->seconds > t.seconds) return true;
-  else if(this->milisseconds > t.milisseconds) return true;
+bool Tempo::biggerThan(Tempo *t) {
+  if(this->hours > t->hours) return true;
+  else if(this->minutes > t->minutes) return true;
+  else if(this->seconds > t->seconds) return true;
+  else if(this->milisseconds > t->milisseconds) return true;
   return false;
+}
+
+bool Tempo::smallerOrEqualThan(Tempo *t) {
+  return !this->biggerThan(t);
 }

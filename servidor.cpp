@@ -5,7 +5,6 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 
-#include "lista.h"
 #include "tempo.h"
 #include "protocolo.h"
 
@@ -112,10 +111,16 @@ void Servidor::shutdown() {
 }
 
 Tempo* Servidor::orderAndReturnThePosition(int position) {
-  int minIndex = -1;
+  int smallerIdx = -1;
   int positions[tempos.size()];
 
-  for (int i = 0; i < tempos.size(); i += 1) {
-
+  for (int i = 0; i < this->tempos.size(); i += 1) {
+    for (int j = i + 1; j < this->tempos.size(); j += 1) {
+      if(smallerIdx == -1 || this->tempos[smallerIdx]->smallerOrEqualThan(this->tempos[j]))
+        smallerIdx = j;
+    }
+    positions[i] = smallerIdx;
+    smallerIdx = -1;
   }
+  return this->tempos[positions[position - 1]];
 }

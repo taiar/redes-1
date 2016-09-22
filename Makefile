@@ -12,8 +12,8 @@ lista: lista.cpp lista.h
 tempo: tempo.cpp tempo.h
 	g++ -c tempo.cpp tempo.h
 
-servidor: servidor.cpp servidor.h protocolo lista tempo token
-	g++ -o servidor servidor.cpp servidor.h protocolo.o lista.o tempo.o token.o
+servidor: servidor.cpp servidor.h protocolo tempo token
+	g++ -o servidor servidor.cpp servidor.h protocolo.o tempo.o token.o
 
 tserv: servidor
 	./servidor 1234

@@ -26,7 +26,8 @@ public:
   Tempo* setFromString(char[]);
   string toString();
   void print();
-  bool biggerThan(Tempo);
+  bool biggerThan(Tempo*);
+  bool smallerOrEqualThan(Tempo*);
 
 private:
   void parseUnit(string);
