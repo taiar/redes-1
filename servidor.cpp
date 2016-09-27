@@ -111,16 +111,25 @@ void Servidor::shutdown() {
 }
 
 Tempo* Servidor::orderAndReturnThePosition(int position) {
-  int smallerIdx = -1;
-  int positions[tempos.size()];
+  Tempo* t = this->tempos[0];
+  qsort((void*) t, this->tempos.size(), sizeof(Tempo), Servidor::compare);
+  return this->tempos[position - 1];
+  // int smallerIdx = 0;
+  // int positions[tempos.size()];
+  //
+  // for (int i = 0; i < this->tempos.size(); i += 1) {
+  //   for (int j = i + 1; j < this->tempos.size(); j += 1) {
+  //     if([smallerIdx]->biggerThan(this->tempos[j]))
+  //       smallerIdx = j;
+  //   }
+  //   positions[i] = smallerIdx;
+  //   std::cout << smallerIdx << std::endl;
+  //   smallerIdx = 0;
+  // }
+  // return this->tempos[positions[position - 1]];
+}
 
-  for (int i = 0; i < this->tempos.size(); i += 1) {
-    for (int j = i + 1; j < this->tempos.size(); j += 1) {
-      if(smallerIdx == -1 || this->tempos[smallerIdx]->smallerOrEqualThan(this->tempos[j]))
-        smallerIdx = j;
-    }
-    positions[i] = smallerIdx;
-    smallerIdx = -1;
-  }
-  return this->tempos[positions[position - 1]];
+int compare(const void *a, const void *b) {
+  if(((Tempo*)a)->biggerThan((Tempo*) b)) return 1;
+  if(((Tempo*)a)->smallerOrEqualThan((Tempo*) b)) return -1;
 }
