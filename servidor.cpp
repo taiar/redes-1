@@ -89,6 +89,14 @@ void fill(const struct sockaddr *addr, char *line) {
 
 void Servidor::pushTime(char msg[]) {
   Tempo *t = new Tempo();
+  Tempo *temporary = t->setFromString(msg);
+  for (int i = 0; i < tempos.size(); ++i) {
+    if(tempos[i] == 0) {
+      tempos[i] = temporary;
+    } else {
+      if()
+    }
+  }
   tempos.push_back(t->setFromString(msg));
   t->print();
 }
