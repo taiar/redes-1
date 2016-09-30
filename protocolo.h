@@ -2,8 +2,8 @@
 #define __PROTOCOLO_H PROTOCOLO
 
 #include <vector>
-
 #include <stdio.h>
+
 #include "servidor.h"
 
 class Protocolo {

@@ -1,90 +1,100 @@
-#include <cstdlib>
-#include <cstring>
-#include <unistd.h>
-
-#include <sys/socket.h>
-#include <arpa/inet.h>
-
-#include "tempo.h"
-#include "protocolo.h"
-
 #include "servidor.h"
 
 #define BUFSZ 1024
 
 int main(int argc, char const *argv[]) {
-  int porta = atoi(argv[1]);
+  Servidor *server = new Servidor(atoi(argv[1]));
 
-  int s;
-  s = socket(AF_INET, SOCK_STREAM, 0);
-  if(s == -1) logexit("socket");
+  server->run();
+
+  exit(EXIT_SUCCESS);
+}
+
+Servidor::Servidor(int porta) {
+  this->porta = porta;
+
+  this->s = socket(AF_INET, SOCK_STREAM, 0);
+  if(s == -1) this->logexit("socket");
 
   setsockopt(s, SOL_SOCKET, SO_REUSEADDR, "eth1", 4);
 
   struct in_addr addr;
-  if(inet_pton(AF_INET, "127.0.0.1", &addr) < 1) logexit("pton");
+  if(inet_pton(AF_INET, "127.0.0.1", &addr) < 1) this->logexit("pton");
   struct sockaddr_in dst;
 
   dst.sin_family = AF_INET;
-  dst.sin_port = htons(porta);
+  dst.sin_port = htons(this->porta);
   dst.sin_addr = addr;
 
   struct sockaddr *sa_dst = (struct sockaddr *)&dst;
 
-  if(bind(s, sa_dst, sizeof(*sa_dst))) logexit("bind");
-  if(listen(s, 0)) logexit("listen");
-  printf("Aguardando...\n");
+  if(bind(s, sa_dst, sizeof(*sa_dst))) this->logexit("bind");
+  if(listen(s, 0)) this->logexit("listen");
+}
 
-  Servidor *server = new Servidor();
-  Protocolo *protocol = new Protocolo(server);
-
+void Servidor::run() {
   while (1) {
-		struct sockaddr raddr;
-		socklen_t rlen = sizeof(struct sockaddr);
+    struct sockaddr raddr;
+    socklen_t rlen = sizeof(struct sockaddr);
 
     int r = accept(s, &raddr, &rlen);
     struct sockaddr_in *raddrptr = (struct sockaddr_in *) &raddr;
     char line[BUFSZ];
 
-    fill((struct sockaddr *)raddrptr, line);
-    printf("connection from %s", line);
+    this->fill((struct sockaddr *)raddrptr, line);
 
-		char line2[BUFSZ];
-		while(strcmp(line2, "sair\n") != 0) {
-			if(recv(r, line2, BUFSZ, 0) <= 0) {
-				close(r);
-			} else {
-				protocol->parse(line2);
-			}
-		}
+    char line2[BUFSZ];
+
+    while(strcmp(line2, "sair\n") != 0) {
+      if(recv(r, line2, BUFSZ, 0) <= 0) {
+        close(r);
+      } else {
+        this->parse(line2);
+      }
+    }
+  }
+}
+
+void Servidor::logexit(const char *str) {
+  perror(str);
+  exit(EXIT_FAILURE);
+}
+
+void Servidor::fill(const struct sockaddr *addr, char *line) {
+  int version;
+  char str[INET6_ADDRSTRLEN];
+  unsigned short port;
+
+  if(addr->sa_family == AF_INET) {
+    version = 4;
+    struct sockaddr_in *addr4 = (struct sockaddr_in *)addr;
+    if(!inet_ntop(addr4->sin_family, &(addr4->sin_addr), str, INET6_ADDRSTRLEN)) logexit("ntop");
+    port = ntohs(addr4->sin_port);
+  } else {
+    version = 6;
+    struct sockaddr_in6 *addr6 = (struct sockaddr_in6 *)addr;
+    if(!inet_ntop(addr6->sin6_family, &(addr6->sin6_addr), str, INET6_ADDRSTRLEN)) logexit("ntop");
+    port = ntohs(addr6->sin6_port);
   }
 
-  exit(EXIT_SUCCESS);
+  sprintf(line, "IPv%d %s %hu\n", version, str, port);
 }
 
-void logexit(const char *str) {
-	perror(str);
-	exit(EXIT_FAILURE);
-}
-
-void fill(const struct sockaddr *addr, char *line) {
-	int version;
-	char str[INET6_ADDRSTRLEN];
-	unsigned short port;
-
-	if(addr->sa_family == AF_INET) {
-		version = 4;
-		struct sockaddr_in *addr4 = (struct sockaddr_in *)addr;
-		if(!inet_ntop(addr4->sin_family, &(addr4->sin_addr), str, INET6_ADDRSTRLEN)) logexit("ntop");
-		port = ntohs(addr4->sin_port);
-	} else {
-		version = 6;
-		struct sockaddr_in6 *addr6 = (struct sockaddr_in6 *)addr;
-		if(!inet_ntop(addr6->sin6_family, &(addr6->sin6_addr), str, INET6_ADDRSTRLEN)) logexit("ntop");
-		port = ntohs(addr6->sin6_port);
-	}
-
-	sprintf(line, "IPv%d %s %hu\n", version, str, port);
+void Servidor::parse(char msg[]) {
+  switch (msg[0]) {
+    case 'C':
+      this->getPosition(msg);
+      break;
+    case 'D':
+      this->pushTime(msg);
+      break;
+    case 'O':
+      this->dumpTimes();
+      break;
+    case 'Z':
+      this->shutdown();
+      break;
+  }
 }
 
 void Servidor::pushTime(char msg[]) {
