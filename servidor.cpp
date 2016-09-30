@@ -4,9 +4,7 @@
 
 int main(int argc, char const *argv[]) {
   Servidor *server = new Servidor(atoi(argv[1]));
-
   server->run();
-
   exit(EXIT_SUCCESS);
 }
 
@@ -37,7 +35,7 @@ void Servidor::run() {
     struct sockaddr raddr;
     socklen_t rlen = sizeof(struct sockaddr);
 
-    int r = accept(s, &raddr, &rlen);
+    this->r = accept(this->s, &raddr, &rlen);
     struct sockaddr_in *raddrptr = (struct sockaddr_in *) &raddr;
     char line[BUFSZ];
 
@@ -46,9 +44,10 @@ void Servidor::run() {
     char line2[BUFSZ];
 
     while(strcmp(line2, "sair\n") != 0) {
-      if(recv(r, line2, BUFSZ, 0) <= 0) {
-        close(r);
+      if(recv(this->r, line2, BUFSZ, 0) <= 0) {
+        close(this->r);
       } else {
+        std::cout << line2 << std::endl;
         this->parse(line2);
       }
     }
@@ -126,19 +125,24 @@ void Servidor::getPosition(char msg[]) {
   Token *t = new Token(mensagem);
   int position = atoi(t->getNextToken().c_str());
   Tempo *tempo = this->returnThePosition(position);
-  if(tempo != 0) std::cout << tempo->toString() << std::endl;
+  if(tempo != 0) this->sendToClient(tempo->toString());
 }
 
 void Servidor::dumpTimes() {
   for(unsigned int i = 0; i < tempos.size(); i += 1) {
-    std::cout << tempos.at(i)->toString() << std::endl;
+    this->sendToClient(tempos.at(i)->toString());
   }
 }
 
 void Servidor::shutdown() {
-  printf("fecha a porra toda\n");
+  this->sendToClient("shutDownPlease");
+  close(this->r);
 }
 
 Tempo* Servidor::returnThePosition(unsigned int position) {
   return (position > this->tempos.size() || position <= 0) ? 0 : this->tempos[position - 1];
+}
+
+void Servidor::sendToClient(std::string s) {
+  send(this->r, s.c_str(), s.length(), 0);
 }

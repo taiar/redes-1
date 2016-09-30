@@ -6,8 +6,8 @@
 #include <cstdlib>
 #include <cstring>
 #include <cstdio>
-#include <unistd.h>
 
+#include <unistd.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
 
@@ -30,10 +30,12 @@ public:
   void shutdown();
   static int compare(const void*, const void*);
   void parse(char[]);
+  void sendToClient(std::string);
 
 private:
   int porta;
   int s;
+  int r;
   std::vector<Tempo*> tempos;
   Tempo* returnThePosition(unsigned int);
 };
