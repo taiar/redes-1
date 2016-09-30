@@ -4,7 +4,7 @@ Protocolo::Protocolo(Servidor *s) {
   this->serverInstance = s;
 }
 
-int Protocolo::parse(char msg[]) {
+void Protocolo::parse(char msg[]) {
   switch (msg[0]) {
     case 'C':
       serverInstance->getPosition(msg);

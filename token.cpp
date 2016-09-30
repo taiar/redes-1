@@ -14,7 +14,7 @@ std::string Token::getNextToken() {
   return this->getToken();
 }
 
-int Token::total() {
+unsigned int Token::total() {
   return this->tokens.size();
 }
 

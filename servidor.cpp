@@ -90,14 +90,20 @@ void fill(const struct sockaddr *addr, char *line) {
 void Servidor::pushTime(char msg[]) {
   Tempo *t = new Tempo();
   Tempo *temporary = t->setFromString(msg);
-  for (int i = 0; i < tempos.size(); ++i) {
+
+  for(unsigned int i = 0; i < tempos.size(); ++i) {
     if(tempos[i] == 0) {
-      tempos[i] = temporary;
+      tempos[i] = t;
+      break; // TODO: remover pra testar
     } else {
-      if()
+      if(tempos[i]->biggerThan(t)) {
+        temporary = tempos[i];
+        tempos[i] = t;
+        t = temporary;
+      }
     }
   }
-  tempos.push_back(t->setFromString(msg));
+
   t->print();
 }
 
@@ -109,7 +115,7 @@ void Servidor::getPosition(char msg[]) {
 }
 
 void Servidor::dumpTimes() {
-  for(int i = 0; i < tempos.size(); i += 1) {
+  for(unsigned int i = 0; i < tempos.size(); i += 1) {
     std::cout << tempos[i]->toString() << std::endl;
   }
 }
@@ -119,25 +125,5 @@ void Servidor::shutdown() {
 }
 
 Tempo* Servidor::orderAndReturnThePosition(int position) {
-  Tempo* t = this->tempos[0];
-  qsort((void*) t, this->tempos.size(), sizeof(Tempo), Servidor::compare);
   return this->tempos[position - 1];
-  // int smallerIdx = 0;
-  // int positions[tempos.size()];
-  //
-  // for (int i = 0; i < this->tempos.size(); i += 1) {
-  //   for (int j = i + 1; j < this->tempos.size(); j += 1) {
-  //     if([smallerIdx]->biggerThan(this->tempos[j]))
-  //       smallerIdx = j;
-  //   }
-  //   positions[i] = smallerIdx;
-  //   std::cout << smallerIdx << std::endl;
-  //   smallerIdx = 0;
-  // }
-  // return this->tempos[positions[position - 1]];
-}
-
-int compare(const void *a, const void *b) {
-  if(((Tempo*)a)->biggerThan((Tempo*) b)) return 1;
-  if(((Tempo*)a)->smallerOrEqualThan((Tempo*) b)) return -1;
 }

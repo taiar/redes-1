@@ -11,7 +11,7 @@ public:
   Token(std::string);
   std::string getToken();
   std::string getNextToken();
-  int total();
+  unsigned int total();
   int getCurrent();
 
 private:

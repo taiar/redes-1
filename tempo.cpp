@@ -19,7 +19,7 @@ Tempo::Tempo(int h, int m, int s, int ms) {
 Tempo* Tempo::setFromString(char msg[]) {
   string message(msg);
   Token *t = new Token(message);
-  for(int i = 1; i < t->total(); i += 1)
+  for(unsigned int i = 1; i < t->total(); i += 1)
     this->parseUnit(t->getNextToken());
   return this;
 }
@@ -38,7 +38,7 @@ void Tempo::parseUnit(string s) {
   string number;
   string timeUnit;
 
-  for(int i = 0; i < s.size(); i += 1)
+  for(unsigned int i = 0; i < s.size(); i += 1)
     this->isNumber(s[i]) ? number += s[i] : timeUnit += s[i];
   this->setTimeUnit(number, timeUnit);
 }

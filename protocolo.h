@@ -11,7 +11,7 @@ public:
   Servidor *serverInstance;
 
   Protocolo(Servidor*);
-  int parse(char[]);
+  void parse(char[]);
 };
 
 #endif
