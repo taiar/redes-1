@@ -61,11 +61,11 @@ void Tempo::setTimeUnit(string number, string timeUnit) {
 }
 
 bool Tempo::biggerThan(Tempo *t) {
-  if(this->hours > t->hours) return true;
-  else if(this->minutes > t->minutes) return true;
-  else if(this->seconds > t->seconds) return true;
-  else if(this->milisseconds > t->milisseconds) return true;
-  return false;
+  return this->toPseudoMs() > t->toPseudoMs();
+}
+
+int Tempo::toPseudoMs() {
+  return (this->milisseconds + (60 * this->seconds) + (60 * 60 * this->minutes) + (60 * 60 * 60 * this->hours));
 }
 
 bool Tempo::smallerOrEqualThan(Tempo *t) {

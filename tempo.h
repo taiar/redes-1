@@ -33,6 +33,7 @@ private:
   void parseUnit(string);
   bool isNumber(char);
   void setTimeUnit(string, string);
+  int toPseudoMs();
 };
 
 #endif

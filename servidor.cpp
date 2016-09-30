@@ -109,8 +109,6 @@ void Servidor::pushTime(char msg[]) {
       i += 1;
     }
   }
-
-  t->setFromString(msg);
 }
 
 void Servidor::getPosition(char msg[]) {
