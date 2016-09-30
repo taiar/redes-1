@@ -91,32 +91,39 @@ void Servidor::pushTime(char msg[]) {
   Tempo *t = new Tempo();
   Tempo *temporary = t->setFromString(msg);
 
-  for(unsigned int i = 0; i < tempos.size(); ++i) {
-    if(tempos[i] == 0) {
-      tempos[i] = t;
-      break; // TODO: remover pra testar
-    } else {
-      if(tempos[i]->biggerThan(t)) {
-        temporary = tempos[i];
-        tempos[i] = t;
-        t = temporary;
+  if(tempos.size() == 0) {
+    tempos.push_back(t);
+  } else {
+    unsigned int i = 0;
+    while (t != 0) {
+      if(i >= tempos.size()) {
+        tempos.push_back(t);
+        t = 0;
+      } else {
+        if(tempos.at(i)->biggerThan(t)) {
+          temporary = tempos.at(i);
+          tempos.at(i) = t;
+          t = temporary;
+        }
       }
+      i += 1;
     }
   }
 
-  t->print();
+  t->setFromString(msg);
 }
 
 void Servidor::getPosition(char msg[]) {
   std::string mensagem(msg);
   Token *t = new Token(mensagem);
   int position = atoi(t->getNextToken().c_str());
-  std::cout << this->orderAndReturnThePosition(position)->toString() << std::endl;
+  Tempo *tempo = this->returnThePosition(position);
+  if(tempo != 0) std::cout << tempo->toString() << std::endl;
 }
 
 void Servidor::dumpTimes() {
   for(unsigned int i = 0; i < tempos.size(); i += 1) {
-    std::cout << tempos[i]->toString() << std::endl;
+    std::cout << tempos.at(i)->toString() << std::endl;
   }
 }
 
@@ -124,6 +131,6 @@ void Servidor::shutdown() {
   printf("fecha a porra toda\n");
 }
 
-Tempo* Servidor::orderAndReturnThePosition(int position) {
-  return this->tempos[position - 1];
+Tempo* Servidor::returnThePosition(unsigned int position) {
+  return (position > this->tempos.size() || position <= 0) ? 0 : this->tempos[position - 1];
 }
