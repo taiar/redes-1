@@ -34,6 +34,7 @@ public:
 private:
   int porta;
   int s;
+  int r;
   std::vector<Tempo*> tempos;
   Tempo* returnThePosition(unsigned int);
 };

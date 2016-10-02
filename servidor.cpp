@@ -37,7 +37,7 @@ void Servidor::run() {
     struct sockaddr raddr;
     socklen_t rlen = sizeof(struct sockaddr);
 
-    int r = accept(s, &raddr, &rlen);
+    this->r = accept(this->s, &raddr, &rlen);
     struct sockaddr_in *raddrptr = (struct sockaddr_in *) &raddr;
     char line[BUFSZ];
 
@@ -136,7 +136,8 @@ void Servidor::dumpTimes() {
 }
 
 void Servidor::shutdown() {
-  printf("fecha a porra toda\n");
+  std::cout << "Fechou a conexão." << std::endl;
+  close(this->r);
 }
 
 Tempo* Servidor::returnThePosition(unsigned int position) {
