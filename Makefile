@@ -3,12 +3,6 @@ main: clean cliente servidor
 token: token.cpp token.h
 	g++ -c token.cpp token.h -g -Wall
 
-protocolo: protocolo.cpp protocolo.h
-	g++ -c protocolo.cpp protocolo.h -g -Wall
-
-lista: lista.cpp lista.h
-	g++ -c lista.cpp lista.h -g -Wall
-
 tempo: tempo.cpp tempo.h
 	g++ -c tempo.cpp tempo.h -g -Wall
 
