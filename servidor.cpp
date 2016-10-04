@@ -120,6 +120,7 @@ void Servidor::pushTime(char msg[]) {
       i += 1;
     }
   }
+  write(this->r, "FAAAALA FERA", strlen("FAAAALA FERA"));
 }
 
 void Servidor::getPosition(char msg[]) {
