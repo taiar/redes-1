@@ -33,7 +33,9 @@ Servidor::Servidor(int porta) {
 }
 
 void Servidor::run() {
-  while (1) {
+  while(1) {
+
+    int read_size;
     struct sockaddr raddr;
     socklen_t rlen = sizeof(struct sockaddr);
 
@@ -45,13 +47,12 @@ void Servidor::run() {
 
     char line2[BUFSZ];
 
-    while(strcmp(line2, "sair\n") != 0) {
-      if(recv(r, line2, BUFSZ, 0) <= 0) {
-        close(r);
-      } else {
-        this->parse(line2);
-      }
+    while((read_size = recv(this->r , line2 , BUFSZ , 0)) > 0) {
+      this->parse(line2);
     }
+
+    close(this->r);
+    sleep(1);
   }
 }
 
