@@ -30,6 +30,7 @@ public:
   void shutdown();
   static int compare(const void*, const void*);
   void parse(char[]);
+  void sendToClient(string);
 
 private:
   int porta;

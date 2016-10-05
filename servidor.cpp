@@ -120,7 +120,6 @@ void Servidor::pushTime(char msg[]) {
       i += 1;
     }
   }
-  write(this->r, "FAAAALA FERA", strlen("FAAAALA FERA"));
 }
 
 void Servidor::getPosition(char msg[]) {
@@ -128,18 +127,21 @@ void Servidor::getPosition(char msg[]) {
   Token *t = new Token(mensagem);
   int position = atoi(t->getNextToken().c_str());
   Tempo *tempo = this->returnThePosition(position);
-  if(tempo != 0) std::cout << tempo->toString() << std::endl;
+  if(tempo != 0) this->sendToClient(tempo->toString());
 }
 
 void Servidor::dumpTimes() {
   for(unsigned int i = 0; i < tempos.size(); i += 1) {
-    std::cout << tempos.at(i)->toString() << std::endl;
+    this->sendToClient(tempos.at(i)->toString());
   }
 }
 
 void Servidor::shutdown() {
-  std::cout << "Fechou a conexão." << std::endl;
   close(this->r);
+}
+
+void Servidor::sendToClient(string s) {
+  write(this->r, (s + '\n').c_str(), s.size() + 1);
 }
 
 Tempo* Servidor::returnThePosition(unsigned int position) {
