@@ -4,9 +4,7 @@
 
 int main(int argc, char const *argv[]) {
   Servidor *server = new Servidor(atoi(argv[1]));
-
   server->run();
-
   exit(EXIT_SUCCESS);
 }
 
@@ -136,9 +134,8 @@ void Servidor::getPosition(char msg[]) {
 }
 
 void Servidor::dumpTimes() {
-  for(unsigned int i = 0; i < tempos.size(); i += 1) {
+  for(unsigned int i = 0; i < tempos.size(); i += 1)
     this->sendToClient(tempos.at(i)->toString());
-  }
   if(tempos.size() == 0) this->sendToClient("O");
 }
 
