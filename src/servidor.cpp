@@ -32,7 +32,6 @@ Servidor::Servidor(int porta) {
 
 void Servidor::run() {
   while(1) {
-
     int read_size;
     struct sockaddr raddr;
     socklen_t rlen = sizeof(struct sockaddr);
