@@ -1,0 +1,17 @@
+digraph finite_state_machine {
+   rankdir = "LR"
+   size="15"
+    orientation="portrait"
+    node [shape = doublecircle,width=0.1]; 0 2 3 EOF;
+    node [shape = circle,width=0.1];
+    1 -> 1 [ label = "[a-zA-Z0-9-]" ];
+    1 -> 0 [ label = "\" \"" ];
+    1 -> 2 [ label = "\\n" ];
+    2 -> 3 [ label = "\\n" ];
+    0 -> 0 [ label = "\\n, \" \"" ];
+    0 -> 1 [ label = "[a-zA-Z0-9-]" ];
+    3 -> 0 [ label = "*" ];
+    0 -> EOF [ label = "EOF" ];
+    null -> 0
+    null [shape = plaintext label=""]
+}
