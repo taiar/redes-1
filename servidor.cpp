@@ -120,6 +120,8 @@ void Servidor::pushTime(char msg[]) {
       i += 1;
     }
   }
+
+  this->sendToClient("D");
 }
 
 void Servidor::getPosition(char msg[]) {
@@ -127,21 +129,26 @@ void Servidor::getPosition(char msg[]) {
   Token *t = new Token(mensagem);
   int position = atoi(t->getNextToken().c_str());
   Tempo *tempo = this->returnThePosition(position);
-  if(tempo != 0) this->sendToClient(tempo->toString());
+  if(tempo != 0)
+    this->sendToClient(tempo->toString());
+  else
+    this->sendToClient("C");
 }
 
 void Servidor::dumpTimes() {
   for(unsigned int i = 0; i < tempos.size(); i += 1) {
     this->sendToClient(tempos.at(i)->toString());
   }
+  if(tempos.size() == 0) this->sendToClient("O");
 }
 
 void Servidor::shutdown() {
+  this->sendToClient("Z");
   close(this->r);
 }
 
 void Servidor::sendToClient(string s) {
-  write(this->r, (s + '\n').c_str(), s.size() + 1);
+  send(this->r, (s + "\n").c_str(), (s.size() + 1), 0);
 }
 
 Tempo* Servidor::returnThePosition(unsigned int position) {

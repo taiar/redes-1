@@ -32,14 +32,45 @@ int main(int argc, char *argv[]) {
 
   if(connect(s, sa_dst, sizeof(*sa_dst))) logexit("connect");
 
-  char line[BUFSZ];
+  char line[BUFSZ] = "";
 
-  while(strcmp(line, "sair\n") != 0) {
-    printf("input> ");
-    fgets(line, BUFSZ, stdin);
-    printf("send %s", line);
-    if(send(s, line, strlen(line)+1, 0) <= 0) logexit("send");
+
+  //keep communicating with server
+  while(1)
+  {
+      char line2[BUFSZ] = "";
+      printf("Enter message : ");
+      fgets(line, BUFSZ, stdin);
+
+      //Send some data
+      if( send(s , line , BUFSZ , 0) < 0)
+      {
+          puts("Send failed");
+          return 1;
+      }
+
+      //Receive a reply from the server
+      if( recv(s , line2 , BUFSZ , 0) < 0)
+      {
+          puts("recv failed");
+          break;
+      }
+
+      puts("Server reply :");
+      if(strcmp(line2, "Z\n") == 0) {
+        break;
+      }
+      else if(strcmp(line2, "O\n") == 0 || strcmp(line2, "D\n") == 0 || strcmp(line2, "C\n") == 0) {
+        continue;
+      }
+      else {
+        printf("%s", line2);
+        continue;
+      }
   }
+
+  close(s);
+  return 0;
 
   close(s);
   exit(EXIT_SUCCESS);
